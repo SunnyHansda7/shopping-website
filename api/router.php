@@ -3,6 +3,13 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+// Enable error reporting to debug Vercel 500 errors
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+// Change directory to the app folder so that relative includes like include("config.php") work properly.
+chdir(dirname(__DIR__) . '/app');
+
 // 1. Rewrite root to /app/index.php
 if ($path === '/') {
     require dirname(__DIR__) . '/app/index.php';
