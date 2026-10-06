@@ -16,19 +16,26 @@ if (getenv("DB_USE_SSL") === "true" || $port === 18007) {
     $flags = 0;
 }
 
-if (
-    !mysqli_real_connect(
-        $conn,
-        $host,
-        $user,
-        $pass,
-        $db,
-        $port,
-        NULL,
-        $flags
-    )
-) {
-    die("Database connection failed: " . mysqli_connect_error());
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+try {
+    if (
+        !mysqli_real_connect(
+            $conn,
+            $host,
+            $user,
+            $pass,
+            $db,
+            $port,
+            NULL,
+            $flags
+        )
+    ) {
+        die("Database connection failed: " . mysqli_connect_error());
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    die("Database Connection Error: " . $e->getMessage() . "<br><br>Please check your Aiven credentials and Vercel Environment Variables.");
 }
 
 mysqli_set_charset($conn, "utf8mb4");
