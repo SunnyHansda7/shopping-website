@@ -23,7 +23,7 @@ if (preg_match('/\.php$/', $path)) {
 }
 
 // 3. Otherwise, look for static files in the /public directory
-$publicFile = dirname(__DIR__) . '/public' . $path;
+$publicFile = __DIR__ . '/public' . $path;
 if (file_exists($publicFile) && !is_dir($publicFile)) {
     $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
     $mime = 'text/plain';
