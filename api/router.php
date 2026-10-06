@@ -3,6 +3,8 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+
+
 // Enable error reporting to debug Vercel 500 errors
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
