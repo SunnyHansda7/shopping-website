@@ -1,14 +1,21 @@
 <?php
-$dbhost = getenv("DB_HOST");
-$dbuser = getenv("DB_USER");
-$dbpass = getenv("DB_PASS");
-$dbname = getenv("DB_NAME");
 
+$conn = mysqli_init();
 
-$conn=mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
+mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
 
-if(!$conn)
-{
-die("could not connect database".mysqli_connect_error());
+mysqli_real_connect(
+    $conn,
+    getenv("DB_HOST"),
+    getenv("DB_USER"),
+    getenv("DB_PASS"),
+    getenv("DB_NAME"),
+    3306,
+    NULL,
+    MYSQLI_CLIENT_SSL
+);
+
+if (!$conn) {
+    die("Could not connect database: " . mysqli_connect_error());
 }
 ?>
