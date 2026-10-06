@@ -1,17 +1,17 @@
 <?php
-// Simple router for PHP built-in server to mimic Vercel's rewrite rules
+// Router specifically for Vercel deployment
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // 1. Rewrite root to /api/index.php
 if ($path === '/') {
-    require __DIR__ . '/api/index.php';
+    require __DIR__ . '/index.php';
     exit;
 }
 
 // 2. Rewrite any .php file to /api/filename.php
 if (preg_match('/\.php$/', $path)) {
-    $apiFile = __DIR__ . '/api' . $path;
+    $apiFile = __DIR__ . $path;
     if (file_exists($apiFile)) {
         require $apiFile;
         exit;
@@ -19,7 +19,7 @@ if (preg_match('/\.php$/', $path)) {
 }
 
 // 3. Otherwise, look for static files in the /public directory
-$publicFile = __DIR__ . '/public' . $path;
+$publicFile = dirname(__DIR__) . '/public' . $path;
 if (file_exists($publicFile) && !is_dir($publicFile)) {
     $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
     $mime = 'text/plain';
