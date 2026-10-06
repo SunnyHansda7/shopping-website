@@ -34,7 +34,7 @@ try {
         die("Database connection failed: " . mysqli_connect_error());
     }
 } catch (Exception $e) {
-    http_response_code(500);
+    http_response_code(200); // Force 200 so Vercel doesn't hide the error screen
     die("Database Connection Error: " . $e->getMessage() . "<br><br>Please check your Aiven credentials and Vercel Environment Variables.");
 }
 
