@@ -9,6 +9,7 @@ if(isset($_POST['submit']))
     } else {
         $p_name=$_POST['pName'];
          $p_price=$_POST['pPrice'];
+         $p_category=$_POST['pCategory'];
         $target_dir="image/";
        $target_file=$target_dir.basename($_FILES['pImage']["name"]);
        
@@ -16,8 +17,8 @@ if(isset($_POST['submit']))
        // You will need to replace this with Cloudinary/AWS S3 SDK to upload images.
      move_uploaded_file($_FILES['pImage']["tmp_name"],$target_file);
      
-    $stmt = mysqli_prepare($conn, "INSERT INTO product(product_name,product_price,product_image) VALUES(?,?,?)");
-    mysqli_stmt_bind_param($stmt, "sss", $p_name, $p_price, $target_file);
+    $stmt = mysqli_prepare($conn, "INSERT INTO product(product_name,product_price,product_image,category) VALUES(?,?,?,?)");
+    mysqli_stmt_bind_param($stmt, "ssss", $p_name, $p_price, $target_file, $p_category);
     
     if(mysqli_stmt_execute($stmt))
     {
@@ -68,6 +69,16 @@ if(isset($_POST['submit']))
                     <div class="form-group">
                         <input type="text" name="pPrice" class="form-control" placeholder="Product Price" required>
 
+                    </div>
+                    <div class="form-group">
+                        <select name="pCategory" class="form-control" required>
+                            <option value="">Select Category</option>
+                            <option value="Men\'s Clothing">Men's Clothing</option>
+                            <option value="Women\'s Clothing">Women's Clothing</option>
+                            <option value="Laptops">Laptops</option>
+                            <option value="Mobiles">Mobiles</option>
+                            <option value="General">General</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <input type="password" name="admin_pass" class="form-control" placeholder="Admin Password (admin123)" required>

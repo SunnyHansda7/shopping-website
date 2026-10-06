@@ -1,26 +1,32 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+$product_name=$_POST['product_name'];
+$amount=$_POST['product_price'];
+$name=isset($_POST['first_name']) ? $_POST['first_name'] . ' ' . $_POST['last_name'] : (isset($_POST['name']) ? $_POST['name'] : 'Customer');
+$phone=$_POST['phone'];
+$email=$_POST['email'];
+$payment_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : 'online';
 
+if ($payment_method == 'cod') {
+    // Send email receipt for COD
+    $subject = "Order Confirmation - " . $product_name;
+    $message = "Hello $name,\n\nThank you for placing your order with us!\n\nOrder Details:\nProduct: $product_name\nTotal Amount: Rs. $amount\nPayment Method: Cash on Delivery\n\nYour order is confirmed and will be shipped to your address shortly.\n\nThank you for shopping with us!";
+    $headers = "From: noreply@shoppingwebsite.com\r\n";
+    @mail($email, $subject, $message, $headers);
 
-echo $product_name=$_POST['product_name'];;
-echo $amount=$_POST['product_price'];;
-echo $name=$_POST['name'];
-echo $phone=$_POST['phone'];
-echo $email=$_POST['email'];
-
-
-		
-			
-	 
-
+    // Redirect to thank you page
+    header("Location: thankyou.php");
+    exit();
+}
 include("Instamojo/Instamojo.php");
 
-
-//$api = new Instamojo\Instamojo("37c6a2f05a9fdf909c0597bc765f404e", "b337706c11a8a1351146d342466a7242", 'https://www.instamojo.com/api/1.1/');
-// only key change karna yha url ye hi rahega 
-
-//$api = new Instamojo\Instamojo('private api key', 'private aut token','https://www.instamojo.com/api/1.1/');
-$api = new Instamojo\Instamojo('6eadb9f056aa4b2fb83217c1e50cb06f', '587e0ea84f93ed9ddc08395b542a333b','https://www.instamojo.com/api/1.1/');
-
+$api_key = getenv("INSTAMOJO_API_KEY") ?: "dee7d6f10ac09cff054fc59287f41a87";
+$auth_token = getenv("INSTAMOJO_AUTH_TOKEN") ?: "d067b0a81f7aa9dfff0e13e843b138b0";
+$api = new Instamojo\Instamojo($api_key, $auth_token, 'https://www.instamojo.com/api/1.1/');
 try {
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'];
@@ -36,16 +42,18 @@ try {
 		"send_sms"=>true,
 		
 		"allow_repeated_payments"=>false,
-		// yha par domai url dal ke check kar lo ok dear ok bro bye  
         "redirect_url" => $redirect_url,
 		
         ));
-    //print_r($response);
+    
 	$pay_url=$response['longurl'];
-	//header("location:$pay_url");
 	echo "<script>window.location.href='$pay_url'</script>";
 }
 catch (Exception $e) {
-    print('Error: ' . $e->getMessage());
+    echo '<div style="color:red; font-family:sans-serif; text-align:center; margin-top:50px;">';
+    echo '<h2>Payment Gateway Error</h2>';
+    print('<p>' . $e->getMessage() . '</p>');
+    echo '<button onclick="window.history.back()">Go Back</button>';
+    echo '</div>';
 }
 ?>

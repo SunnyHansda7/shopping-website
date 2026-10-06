@@ -17,7 +17,9 @@ include("config.php");
 
 
 
-			$api = new Instamojo\Instamojo("6eadb9f056aa4b2fb83217c1e50cb06f", "587e0ea84f93ed9ddc08395b542a333b", 'https://www.instamojo.com/api/1.1/');
+			$api_key = getenv("INSTAMOJO_API_KEY") ?: "dee7d6f10ac09cff054fc59287f41a87";
+			$auth_token = getenv("INSTAMOJO_AUTH_TOKEN") ?: "d067b0a81f7aa9dfff0e13e843b138b0";
+			$api = new Instamojo\Instamojo($api_key, $auth_token, 'https://www.instamojo.com/api/1.1/');
 			$payid = $_GET['payment_request_id'];
 
 
