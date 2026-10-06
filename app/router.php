@@ -3,19 +3,15 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// 1. Rewrite root to /app/index.php
+// 1. Rewrite root to /api/index.php
 if ($path === '/') {
-
-    require __DIR__ . '/app/index.php';
-
+    require __DIR__ . '/index.php';
     exit;
 }
 
-// 2. Rewrite any .php file to /app/filename.php
+// 2. Rewrite any .php file to /api/filename.php
 if (preg_match('/\.php$/', $path)) {
-
-    $apiFile = __DIR__ . '/app' . $path;
-
+    $apiFile = __DIR__ . $path;
     if (file_exists($apiFile)) {
         require $apiFile;
         exit;
@@ -27,15 +23,11 @@ $publicFile = dirname(__DIR__) . '/public' . $path;
 if (file_exists($publicFile) && !is_dir($publicFile)) {
     $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
     $mime = 'text/plain';
-    if ($ext === 'css')
-        $mime = 'text/css';
-    if ($ext === 'js')
-        $mime = 'application/javascript';
-    if ($ext === 'png')
-        $mime = 'image/png';
-    if ($ext === 'jpg' || $ext === 'jpeg')
-        $mime = 'image/jpeg';
-
+    if ($ext === 'css') $mime = 'text/css';
+    if ($ext === 'js') $mime = 'application/javascript';
+    if ($ext === 'png') $mime = 'image/png';
+    if ($ext === 'jpg' || $ext === 'jpeg') $mime = 'image/jpeg';
+    
     header("Content-Type: $mime");
     readfile($publicFile);
     exit;
