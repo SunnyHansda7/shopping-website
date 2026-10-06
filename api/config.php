@@ -10,7 +10,7 @@ mysqli_real_connect(
     getenv("DB_USER"),
     getenv("DB_PASS"),
     getenv("DB_NAME"),
-    3306,
+    18007,
     NULL,
     MYSQLI_CLIENT_SSL
 );
