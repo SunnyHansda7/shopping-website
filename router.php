@@ -3,6 +3,12 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+// Change directory to app so relative includes work
+chdir(__DIR__ . '/app');
+
 // 1. Rewrite root to /app/index.php
 if ($path === '/') {
 

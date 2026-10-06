@@ -1,14 +1,13 @@
 {
   "functions": {
-    "api/router.php": {
-      "runtime": "vercel-php@0.6.1",
-      "includeFiles": "{app,public}/**"
+    "router.php": {
+      "runtime": "vercel-php@0.6.1"
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api/router.php"
+      "destination": "/router.php"
     }
   ]
 }
