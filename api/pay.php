@@ -19,7 +19,7 @@ include("Instamojo/Instamojo.php");
 // only key change karna yha url ye hi rahega 
 
 //$api = new Instamojo\Instamojo('private api key', 'private aut token','https://www.instamojo.com/api/1.1/');
-$api = new Instamojo\Instamojo('6eadb9f056aa4b2fb83217c1e50cb06f', '587e0ea84f93ed9ddc08395b542a333b','https://test.instamojo.com/api/1.1/');
+$api = new Instamojo\Instamojo('6eadb9f056aa4b2fb83217c1e50cb06f', '587e0ea84f93ed9ddc08395b542a333b','https://www.instamojo.com/api/1.1/');
 
 try {
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
