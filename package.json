@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": "22.x"
+    "node": "18.x"
   },
   "scripts": {
     "dev": "php -S localhost:8000 router.php"

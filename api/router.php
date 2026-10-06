@@ -3,6 +3,24 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+if ($path === '/debug') {
+    echo "<pre>";
+    echo "Current directory: " . getcwd() . "\n";
+    echo "__DIR__: " . __DIR__ . "\n";
+    echo "Files in __DIR__: \n";
+    print_r(scandir(__DIR__));
+    echo "Files in dirname(__DIR__): \n";
+    print_r(scandir(dirname(__DIR__)));
+    if (is_dir(dirname(__DIR__) . '/app')) {
+        echo "Files in app/: \n";
+        print_r(scandir(dirname(__DIR__) . '/app'));
+    } else {
+        echo "APP DIRECTORY NOT FOUND!\n";
+    }
+    echo "</pre>";
+    exit;
+}
+
 
 
 // Enable error reporting to debug Vercel 500 errors
